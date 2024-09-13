@@ -1,0 +1,2 @@
+# TinyVGG-Classifier-Custom-Dataset-Image-Classification-with-Augmentation-using-PyTorch
+This project implements a TinyVGG model for image classification using PyTorch. It features custom dataset handling, data augmentation, and model training with visualized performance metrics. The model is tested on pizza, steak, and sushi images, showcasing efficient training pipelines for multi-class classification tasks.
