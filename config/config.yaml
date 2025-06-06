@@ -1,0 +1,111 @@
+# TinyVGG Image Classifier Configuration
+
+# Model Configuration
+model:
+  name: "TinyVGG"
+  size: "medium"  # Options: small, medium, large
+  input_channels: 3
+  num_classes: 3
+  dropout_rate: 0.2
+  hidden_units: [64, 128, 256]
+
+# Data Configuration
+data:
+  dataset_name: "pizza_steak_sushi"
+  data_dir: "data"
+  train_dir: "data/train"
+  test_dir: "data/test"
+  image_size: 224
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+  class_names: ["pizza", "steak", "sushi"]
+  
+  # Data augmentation parameters
+  augmentation:
+    horizontal_flip_prob: 0.5
+    rotation_degrees: 15
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+      saturation: 0.2
+      hue: 0.1
+    random_grayscale_prob: 0.1
+    random_erasing_prob: 0.1
+
+# Training Configuration
+training:
+  num_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.01
+  optimizer: "AdamW"  # Options: Adam, AdamW, SGD
+  scheduler: "CosineAnnealingWarmRestarts"  # Options: CosineAnnealingWarmRestarts, StepLR, ReduceLROnPlateau
+  
+  # Early stopping
+  early_stopping:
+    patience: 15
+    min_delta: 1e-4
+    restore_best_weights: true
+  
+  # Checkpointing
+  checkpoint:
+    save_best_only: true
+    save_frequency: 10
+    monitor: "val_loss"
+  
+  # Loss function
+  loss:
+    name: "CrossEntropyLoss"
+    use_class_weights: true
+
+# Validation Configuration
+validation:
+  val_split: 0.2
+  shuffle: true
+  
+# Logging Configuration
+logging:
+  log_level: "INFO"
+  log_file: "logs/training.log"
+  use_wandb: false
+  use_tensorboard: false
+  wandb:
+    project_name: "tinyvgg-food-classification"
+    entity: null
+    tags: ["tinyvgg", "food-classification", "pytorch"]
+
+# Experiment Configuration
+experiment:
+  name: "tinyvgg_experiment"
+  save_dir: "experiments"
+  seed: 42
+  
+# Inference Configuration
+inference:
+  model_path: "experiments/tinyvgg_experiment/best_model.pth"
+  confidence_threshold: 0.5
+  batch_size: 1
+  
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  reload: true
+  max_file_size: 10485760  # 10MB
+  allowed_extensions: [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]
+
+# Deployment Configuration
+deployment:
+  device: "auto"  # Options: cpu, cuda, auto
+  precision: "fp32"  # Options: fp32, fp16
+  optimization:
+    quantization: false
+    onnx_export: false
+    torchscript: false
+
+# Monitoring Configuration
+monitoring:
+  metrics_to_track: ["accuracy", "loss", "f1_score", "precision", "recall"]
+  save_predictions: true
+  save_confusion_matrix: true
+  save_classification_report: true 
