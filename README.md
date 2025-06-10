@@ -92,106 +92,6 @@ TinyVGG-Classifier/
 └── 📄 README.md                     # This file
 ```
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8 or higher
-- PyTorch 2.0+
-- CUDA (optional, for GPU acceleration)
-
-### 1. Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/TinyVGG-Classifier.git
-cd TinyVGG-Classifier
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 2. Download Data & Train
-
-```bash
-# Download sample dataset and start training
-python train.py --download-data --experiment-name my_first_experiment
-
-# Custom training with specific parameters
-python train.py \
-    --experiment-name custom_experiment \
-    --epochs 50 \
-    --batch-size 64 \
-    --learning-rate 0.001 \
-    --wandb
-```
-
-### 3. Launch API Server
-
-```bash
-# Start the FastAPI server
-python -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
-
-# API documentation available at: http://localhost:8000/docs
-```
-
-### 4. Make Predictions
-
-```python
-import requests
-
-# Single image prediction
-with open("pizza_image.jpg", "rb") as f:
-    files = {"file": f}
-    response = requests.post("http://localhost:8000/predict", files=files)
-    print(response.json())
-```
-
-## 🏋️ Training Options
-
-### Basic Training
-```bash
-python train.py --config config/config.yaml
-```
-
-### Advanced Training with Monitoring
-```bash
-python train.py \
-    --experiment-name production_model_v1 \
-    --epochs 100 \
-    --batch-size 32 \
-    --learning-rate 0.001 \
-    --wandb \
-    --tensorboard
-```
-
-### Configuration Parameters
-
-The training is highly configurable through `config/config.yaml`:
-
-```yaml
-model:
-  size: "medium"  # Options: small, medium, large
-  dropout_rate: 0.2
-
-training:
-  num_epochs: 100
-  learning_rate: 0.001
-  optimizer: "AdamW"
-  scheduler: "CosineAnnealingWarmRestarts"
-  
-  early_stopping:
-    patience: 15
-    min_delta: 1e-4
-
-logging:
-  use_wandb: true
-  use_tensorboard: true
-```
-
 ## 📊 Model Performance
 
 | Model Size | Parameters | Accuracy | Inference Time | Model Size |
@@ -262,73 +162,6 @@ with open("food_image.jpg", "rb") as f:
     "inference_time_ms": 23.4,
     "filename": "food_image.jpg"
 }
-```
-
-## 🐳 Docker Deployment
-
-### Build and Run
-
-```bash
-# Build the Docker image
-docker build -t tinyvgg-classifier .
-
-# Run the container
-docker run -p 8000:8000 tinyvgg-classifier
-
-# Or use docker-compose
-docker-compose up --build
-```
-
-### Production Deployment
-
-```yaml
-# docker-compose.prod.yml
-version: '3.8'
-services:
-  api:
-    image: tinyvgg-classifier:latest
-    ports:
-      - "8000:8000"
-    environment:
-      - WORKERS=4
-      - MAX_MEMORY=2G
-    restart: unless-stopped
-    
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    depends_on:
-      - api
-```
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-pytest tests/ -v --cov=src
-
-# Run specific test categories
-pytest tests/test_models.py -v
-pytest tests/test_api.py -v
-
-# Performance testing
-pytest tests/test_performance.py -v --benchmark-only
-```
-
-## 📈 Monitoring & Logging
-
-### Weights & Biases Integration
-```python
-# Automatic experiment tracking
-import wandb
-
-wandb.init(
-    project="tinyvgg-food-classification",
-    config=config,
-    tags=["production", "food-classification"]
-)
-```
 
 ### Custom Metrics
 - Training/validation loss and accuracy
@@ -336,24 +169,6 @@ wandb.init(
 - Model parameter distributions
 - Inference time statistics
 - Memory usage monitoring
-
-## 🔧 Development
-
-### Code Quality
-```bash
-# Format code
-black src/ tests/
-
-# Lint code
-flake8 src/ tests/
-
-# Type checking
-mypy src/
-
-# Pre-commit hooks
-pre-commit install
-pre-commit run --all-files
-```
 
 ### Adding New Features
 1. Create feature branch: `git checkout -b feature/new-feature`
@@ -381,18 +196,6 @@ pre-commit run --all-files
 - **Authentication**: JWT token support
 - **HTTPS**: SSL/TLS encryption
 
-## 📚 Further Reading
-
-### Research Papers
-- [VGG Architecture](https://arxiv.org/abs/1409.1556)
-- [Batch Normalization](https://arxiv.org/abs/1502.03167)
-- [Data Augmentation](https://arxiv.org/abs/1904.07960)
-
-### Documentation
-- [PyTorch Documentation](https://pytorch.org/docs/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Weights & Biases Guides](https://docs.wandb.ai/)
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
@@ -407,17 +210,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Authors
 
-- **Your Name** - *Lead Developer* - [GitHub Profile](https://github.com/yourusername)
-
-## 🙏 Acknowledgments
-
-- PyTorch team for the excellent deep learning framework
-- FastAPI for the high-performance web framework
-- The open-source community for continuous inspiration
-
----
 
 **Built with ❤️ for production-ready ML deployment**
 
